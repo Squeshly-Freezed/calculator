@@ -8,12 +8,12 @@ body {
     background-color: rgba(225, 160, 106, 0.735);
     margin: 0;
     position: relative;
-        min-width: 404px;
+    min-width: 404px;
 
 }
 
 #background-container {
-    background-image: url(img/calculator.png);
+    background-image: url(img/calculator-copy.png);
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: center;
@@ -23,6 +23,7 @@ body {
     justify-content: center;
     border: 2px solid red;
     height: 99.8dvh;
+    box-shadow: inset 0px 0px 200px 200px rgba(2, 2, 2, 0.397);
 }
 
 #calculator-container {
@@ -39,15 +40,16 @@ body {
 
 #display {
     font-weight: bold;
-    width: 80%;
+    width: 79%;
     font-size: 50px;
     letter-spacing: 0.15rem;
-    color: rgb(0, 0, 0);
-    text-shadow: 0 0 2px #000000;
+    color: rgb(31, 30, 30);
+    text-shadow: 0 0 2px #232323,
+                 2px 2px 3px #a5a5a5;
     border: 2px solid yellow;
     text-align: right;
     position: absolute;
-    top: -40px;
+    top: -39px;
 }
 
 #button-container {
@@ -60,15 +62,28 @@ body {
     border: 2px solid blue;
 }
 
-button {
+.key {
     transition: transform 60ms ease, filter 60ms ease, box-shadow 60ms ease;
     outline-color: transparent;
-    opacity: 0.5;
+    opacity: 0.2;
+    border-radius: 10px;
+    border: 0;
+    cursor: pointer;
     /* border-style: groove; */
 }
 
-#space1, #space2, #space3{
+button:active {
+
+}
+
+.key:hover {
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.10);
+}
+
+.space {
     grid-column: span 5;
+    cursor: default;
+    opacity: 0;
 }
 
 #space4 {
@@ -95,5 +110,11 @@ button {
 @media (max-width: 320px) {
     #display {
         display: none;
+    }
+}
+
+@media (max-width: 1100px) {
+    #background-container {
+        box-shadow: inset 0px 0px 100px 100px rgba(2, 2, 2, 0.397);
     }
 }
