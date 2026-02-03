@@ -1,54 +1,66 @@
 
 const calculate = function() {
+    
+    document.addEventListener('DOMContentLoaded', initializeEventListeners);
 
     let expression = {
-            firstInput: 0,
-            operator: null,
-            secondInput: 0,
-        };
-
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
-    const buttonContainer = document.querySelector("#button-container");
-    const display = document.querySelector("#display");
-
-    buttonContainer.addEventListener("click", (event) => {
+        firstInput: 0,
+        operator: null,
+        secondInput: 0,
+    };
         
-        if (event.target.classList.contains("number")) {
-            if (expression.operator) {
-                expression.secondInput = parseInt(event.target.textContent);
-                showDisplay(expression.secondInput);    
-            } else {
-                expression.firstInput = parseInt(event.target.textContent);
-                showDisplay(expression.firstInput);
-            }
-        }
+    function initializeEventListeners() {
 
-        if (event.target.classList.contains("operator")) {
-            if (!expression.operator) {
-                expression.operator = event.target.textContent;
-            } else {
+        document.addEventListener("contextmenu", (event) => event.preventDefault());
+
+        const buttonContainer = document.querySelector("#button-container");
+        buttonContainer.addEventListener("click", (event) => {
+            
+            if (event.target.classList.contains("number")) {
+                if (expression.operator) {
+                    expression.secondInput = parseInt(event.target.textContent);
+                    showDisplay(expression.secondInput);    
+                } else {
+                    expression.firstInput = parseInt(event.target.textContent);
+                    showDisplay(expression.firstInput);
+                }
+            }
+
+            if (event.target.classList.contains("operator")) {
+                if (!expression.operator) {
+                    expression.operator = event.target.textContent;
+                } else {
+                    operate();
+                    expression.secondInput = 0;
+                    expression.operator = event.target.textContent;
+                }
+
+            }
+
+            if (event.target.classList.contains("clear")) {
+                clear();
+            }
+            
+            if (expression.operator && event.target.classList.contains("equals")) {
                 operate();
                 expression.secondInput = 0;
-                expression.operator = event.target.textContent;
+                expression.operator = null;
             }
 
-        }
+            if (event.target.classList.contains("MC")) {
+                if (expression.firstInput == 1337);
+                clear();
+                showEasterEgg();
+            }
 
-        if (event.target.classList.contains("clear")) {
-            clear();
-        }
-        
-        if (expression.operator && event.target.classList.contains("equals")) {
-            operate();
-            expression.secondInput = 0;
-            expression.operator = null;
-        }
+            console.log(expression);
 
-        console.log(expression);
+        });
 
-    });
+    }
 
-
+    const character = document.querySelector("#lady");
+    const display = document.querySelector("#display");
     const showDisplay = function(response) {
         display.textContent = response;
     }
@@ -78,6 +90,10 @@ const calculate = function() {
         expression.operator = null;
         expression.secondInput = 0;
         showDisplay(0);
+    }
+
+    const showEasterEgg = function() {
+        character.style.display="inline";
     }
 
     const operate = function() {
