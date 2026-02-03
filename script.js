@@ -1,47 +1,71 @@
-let currentValue = 0;
-let firstInput = 0;
-let secondInput = 0;
-let operator = "+";
 
-const keyList = document.querySelectorAll(".key");
-const buttonContainer = document.querySelector("#button-container");
-const display = document.querySelector("#display");
+const calculate = function() {
 
-buttonContainer.addEventListener("click", (event) => {
-    if (event.target.classList.contains("number")) {
-        firstInput = event.target.textContent;
-        secondInput = 
-        showDisplay();
-        console.log(firstInput);
+    let currentValue = 0;
+    let secondInput = 0;
+    // let operator = "+";
+
+    let expression = {
+            firstInput: 0,
+            operator: null,
+            secondInput: 0,
+        };
+
+    const buttonContainer = document.querySelector("#button-container");
+    const display = document.querySelector("#display");
+
+    buttonContainer.addEventListener("click", (event) => {
+        
+        if (event.target.classList.contains("number")) {
+            expression.firstInput = event.target.textContent;
+            showDisplay(expression.firstInput);
+            console.log(expression);
+
+        }
+        if (event.target.classList.contains("operator")) {
+            expression.operator = event.target.textContent;
+            console.log(expression);
+        }
+
+        if (event.target.classList.contains("clear")) {
+            clear(firstInput, secondInput, currentValue);
+        }
+
+    });
+
+
+    const showDisplay = function(response) {
+        display.textContent = response;
     }
-    if (event.target.classList.contains("operator")) {
-        operator = event.target.textContent;
-        operate(operator);
-        console.log(operator);
+
+    const add = function(operand) {
+        return currentValue += operand;
     }
-});
 
+    const subtract = function(operand) {
+        return currentValue -= operand;
+    }
 
-const showDisplay = function() {
-    display.textContent = firstInput || currentValue;
-}
+    const multiply = function(operand) {
+        return currentValue *= operand;
+    }
 
-const add = function(operand) {
-    return currentValue += operand;
-}
+    const divide = function(operand) {
+        return currentValue /= operand;
+    }
 
-const subtract = function(operand) {
-    return currentValue -= operand;
-}
+    const clear = function(firstInput, secondInput, currentValue) {
+        display.textContent = 0;
+        firstInput = 0;
+        secondInput = 0;
+        currentValue = 0;
+    }
 
-const multiply = function(operand) {
-    return currentValue *= operand;
-}
+    const operate = function(operator, firstInput, secondInput) {
+        // currentValue = 
+        showDisplay(currentValue);
+    }
 
-const divide = function(operand) {
-    return currentValue /= operand;
-}
+};
 
-const operate = function(operator, firstInput, secondInput) {
-    return ``
-}
+calculate();
