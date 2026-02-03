@@ -23,14 +23,6 @@ const calculate = function() {
             }
         }
 
-
-
-
-        // if (!expression.operator && event.target.classList.contains("number")) {
-        //     expression.firstInput = event.target.textContent;
-        //     showDisplay(expression.firstInput);
-        //     console.log(expression);
-        // }
         if (event.target.classList.contains("operator")) {
             if (!expression.operator) {
                 expression.operator = event.target.textContent;
@@ -39,25 +31,25 @@ const calculate = function() {
                 expression.secondInput = 0;
                 expression.operator = event.target.textContent;
             }
+
         }
+
         if (event.target.classList.contains("clear")) {
             clear();
         }
-        // if (expression.operator && event.target.classList.contains("number")) {
-        //     // expression.firstInput = event.target.textContent;
-        //     expression.secondInput = event.target.textContent;
-        // }
+        
         if (expression.operator && event.target.classList.contains("equals")) {
             operate();
             expression.secondInput = 0;
             expression.operator = null;
         }
+
         console.log(expression);
+
     });
 
 
     const showDisplay = function(response) {
-        display.textContent = "";
         display.textContent = response;
     }
 
@@ -65,16 +57,20 @@ const calculate = function() {
         expression.firstInput = expression.firstInput + expression.secondInput;
     }
 
-    const subtract = function(operand) {
-        return firstInput -= operand;
+    const subtract = function() {
+        expression.firstInput = expression.firstInput - expression.secondInput;
     }
 
-    const multiply = function(operand) {
-        return firstInput *= operand;
+    const multiply = function() {
+        expression.firstInput = expression.firstInput * expression.secondInput;
     }
 
-    const divide = function(operand) {
-        return firstInput /= operand;
+    const divide = function() {
+        expression.firstInput = expression.firstInput / expression.secondInput;
+    }
+
+    const modulo = function() {
+        expression.firstInput = expression.firstInput % expression.secondInput;
     }
 
     const clear = function() {
@@ -90,6 +86,22 @@ const calculate = function() {
                 add();
                 showDisplay(expression.firstInput);
                 break;
+            case "-":
+                subtract();
+                showDisplay(expression.firstInput);
+                break;
+            case "*":
+                multiply();
+                showDisplay(expression.firstInput);
+                break;
+            case "/":
+                divide();
+                showDisplay(expression.firstInput);
+                break;
+            case "%":
+                modulo();
+                showDisplay(expression.firstInput);
+                break; 
         }
     }
 
