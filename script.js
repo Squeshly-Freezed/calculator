@@ -2,9 +2,9 @@
 const calculate = function() {
     
     let expression = {
-        firstInput: 0,
+        firstInput: "",
         operator: null,
-        secondInput: 0,
+        secondInput: "",
     };
 
     function initializeEventListeners() {
@@ -15,10 +15,10 @@ const calculate = function() {
 
             if (event.target.classList.contains("number")) {
                 if (expression.operator) {
-                    expression.secondInput = parseFloat(event.target.textContent);
+                    expression.secondInput += event.target.textContent;
                     showDisplay(expression.secondInput);    
                 } else {
-                    expression.firstInput = parseFloat(event.target.textContent);
+                    expression.firstInput += event.target.textContent;
                     showDisplay(expression.firstInput);
                 }
             }
@@ -28,7 +28,8 @@ const calculate = function() {
                     expression.operator = event.target.textContent;
                 } else {
                     operate();
-                    expression.secondInput = 0;
+                    expression.secondInput = "";
+                    expression.firstInput = `${expression.firstInput}`;
                     expression.operator = event.target.textContent;
                 }
 
@@ -40,8 +41,9 @@ const calculate = function() {
             
             if (expression.operator && event.target.classList.contains("equals")) {
                 operate();
-                expression.secondInput = 0;
+                expression.secondInput = "";
                 expression.operator = null;
+                expression.firstInput = `${expression.firstInput}`;
             }
 
             if (event.target.classList.contains("MC")) {
@@ -69,16 +71,16 @@ const calculate = function() {
     const showDisplay = function(response) {
         display.style.visibility = "hidden";
         setTimeout(() => {
-            display.style.visibility = "visible";
+        display.style.visibility = "visible";
         }, 45);
         display.textContent = response;
     }
 
     const clear = function() {
-        expression.firstInput = 0;
+        expression.firstInput = "";
         expression.operator = null;
-        expression.secondInput = 0;
-        showDisplay(expression.firstInput);
+        expression.secondInput = "";
+        showDisplay("0");
     }
 
     const character = document.querySelector("#lady");
@@ -94,19 +96,19 @@ const calculate = function() {
     const operate = function() {
         switch (expression.operator) {
             case "+":
-                showDisplay(expression.firstInput = expression.firstInput + expression.secondInput);
+                showDisplay(expression.firstInput = parseFloat(expression.firstInput) + parseFloat(expression.secondInput));
                 break;
             case "-":
-                showDisplay(expression.firstInput = expression.firstInput - expression.secondInput);
+                showDisplay(expression.firstInput = parseFloat(expression.firstInput) - parseFloat(expression.secondInput));
                 break;
             case "*":
-                showDisplay(expression.firstInput = expression.firstInput * expression.secondInput);
+                showDisplay(expression.firstInput = parseFloat(expression.firstInput) * parseFloat(expression.secondInput));
                 break;
             case "/":
-                showDisplay(expression.firstInput = expression.firstInput / expression.secondInput);
+                showDisplay(expression.firstInput = parseFloat(expression.firstInput) / parseFloat(expression.secondInput));
                 break;
             case "%":
-                showDisplay(expression.firstInput = expression.firstInput % expression.secondInput);
+                showDisplay(expression.firstInput = parseFloat(expression.firstInput) % parseFloat(expression.secondInput));
                 break; 
         }
     }
