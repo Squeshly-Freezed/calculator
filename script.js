@@ -7,20 +7,18 @@ const calculate = function() {
         secondInput: 0,
     };
 
-    document.addEventListener('DOMContentLoaded', initializeEventListeners);
-        
     function initializeEventListeners() {
 
         const buttonContainer = document.querySelector("#button-container");
-        buttonContainer.addEventListener("click", handleButtons);
+        buttonContainer.addEventListener("mousedown", handleButtons);
         function handleButtons (event) {
 
             if (event.target.classList.contains("number")) {
                 if (expression.operator) {
-                    expression.secondInput = parseInt(event.target.textContent);
+                    expression.secondInput = parseFloat(event.target.textContent);
                     showDisplay(expression.secondInput);    
                 } else {
-                    expression.firstInput = parseInt(event.target.textContent);
+                    expression.firstInput = parseFloat(event.target.textContent);
                     showDisplay(expression.firstInput);
                 }
             }
@@ -53,6 +51,13 @@ const calculate = function() {
                 }
             }
 
+            // if (event.target.classList.contains("decimal")) {
+            //     if (expression.operator) {
+            //         expression.secondInput = parseInt(.)
+            //     } else {
+            //         expression.firstInput = 
+            //     }
+            // }
             console.log(expression);
         }
          
@@ -60,7 +65,6 @@ const calculate = function() {
 
     }
 
-    const character = document.querySelector("#lady");
     const display = document.querySelector("#display");
     const showDisplay = function(response) {
         display.style.visibility = "hidden";
@@ -70,26 +74,6 @@ const calculate = function() {
         display.textContent = response;
     }
 
-    const add = function() {
-        expression.firstInput = expression.firstInput + expression.secondInput;
-    }
-
-    const subtract = function() {
-        expression.firstInput = expression.firstInput - expression.secondInput;
-    }
-
-    const multiply = function() {
-        expression.firstInput = expression.firstInput * expression.secondInput;
-    }
-
-    const divide = function() {
-        expression.firstInput = expression.firstInput / expression.secondInput;
-    }
-
-    const modulo = function() {
-        expression.firstInput = expression.firstInput % expression.secondInput;
-    }
-
     const clear = function() {
         expression.firstInput = 0;
         expression.operator = null;
@@ -97,6 +81,7 @@ const calculate = function() {
         showDisplay(expression.firstInput);
     }
 
+    const character = document.querySelector("#lady");
     const showEasterEgg = function() {
         character.style.visibility = "visible";
         character.style.opacity = "1";
@@ -109,27 +94,24 @@ const calculate = function() {
     const operate = function() {
         switch (expression.operator) {
             case "+":
-                add();
-                showDisplay(expression.firstInput);
+                showDisplay(expression.firstInput = expression.firstInput + expression.secondInput);
                 break;
             case "-":
-                subtract();
-                showDisplay(expression.firstInput);
+                showDisplay(expression.firstInput = expression.firstInput - expression.secondInput);
                 break;
             case "*":
-                multiply();
-                showDisplay(expression.firstInput);
+                showDisplay(expression.firstInput = expression.firstInput * expression.secondInput);
                 break;
             case "/":
-                divide();
-                showDisplay(expression.firstInput);
+                showDisplay(expression.firstInput = expression.firstInput / expression.secondInput);
                 break;
             case "%":
-                modulo();
-                showDisplay(expression.firstInput);
+                showDisplay(expression.firstInput = expression.firstInput % expression.secondInput);
                 break; 
         }
     }
+
+    document.addEventListener("DOMContentLoaded", initializeEventListeners);
 
 };
 
