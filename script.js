@@ -1,21 +1,20 @@
 
 const calculate = function() {
     
-    document.addEventListener('DOMContentLoaded', initializeEventListeners);
-
     let expression = {
         firstInput: 0,
         operator: null,
         secondInput: 0,
     };
+
+    document.addEventListener('DOMContentLoaded', initializeEventListeners);
         
     function initializeEventListeners() {
 
-        document.addEventListener("contextmenu", (event) => event.preventDefault());
-
         const buttonContainer = document.querySelector("#button-container");
-        buttonContainer.addEventListener("click", (event) => {
-            
+        buttonContainer.addEventListener("click", handleButtons);
+        function handleButtons (event) {
+
             if (event.target.classList.contains("number")) {
                 if (expression.operator) {
                     expression.secondInput = parseInt(event.target.textContent);
@@ -48,20 +47,26 @@ const calculate = function() {
             }
 
             if (event.target.classList.contains("MC")) {
-                if (expression.firstInput == 1337);
+                if (expression.firstInput == 1337) {
                 clear();
                 showEasterEgg();
+                }
             }
 
             console.log(expression);
-
-        });
+        }
+         
+        document.addEventListener("contextmenu", (event) => event.preventDefault());
 
     }
 
     const character = document.querySelector("#lady");
     const display = document.querySelector("#display");
     const showDisplay = function(response) {
+        display.style.visibility = "hidden";
+        setTimeout(() => {
+            display.style.visibility = "visible";
+        }, 45);
         display.textContent = response;
     }
 
@@ -89,11 +94,16 @@ const calculate = function() {
         expression.firstInput = 0;
         expression.operator = null;
         expression.secondInput = 0;
-        showDisplay(0);
+        showDisplay(expression.firstInput);
     }
 
     const showEasterEgg = function() {
-        character.style.display="inline";
+        character.style.visibility = "visible";
+        character.style.opacity = "1";
+        setTimeout(() => {
+        character.style.visibility = "hidden";
+        character.style.opacity = "0";
+        }, 1337);
     }
 
     const operate = function() {
