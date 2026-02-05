@@ -61,6 +61,11 @@ const calculate = function() {
             }
 
             if (event.target.classList.contains("decimal")) {
+                if (expression.clearOldSum) {
+                    expression.firstInput = "";
+                    expression.clearOldSum = false;
+                    showDisplay(expression.firstInput = "0.");
+                }
                 if (expression.operator && !expression.secondHasDecimal) {
                     expression.secondInput == "" ? showDisplay(expression.secondInput = "0.") : showDisplay(expression.secondInput += ".");
                     // expression.hasDecimal = true;
@@ -113,23 +118,25 @@ const calculate = function() {
     }
 
     const operate = function() {
-        switch (expression.operator) {
-            case "+":
-                showDisplay(expression.firstInput = parseFloat(expression.firstInput) + parseFloat(expression.secondInput));
-                break;
-            case "-":
-                showDisplay(expression.firstInput = parseFloat(expression.firstInput) - parseFloat(expression.secondInput));
-                break;
-            case "*":
-                showDisplay(expression.firstInput = parseFloat(expression.firstInput) * parseFloat(expression.secondInput));
-                break;
-            case "/":
-                showDisplay(expression.firstInput = parseFloat(expression.firstInput) / parseFloat(expression.secondInput));
-                break;
-            case "%":
-                showDisplay(expression.firstInput = parseFloat(expression.firstInput) % parseFloat(expression.secondInput));
-                break; 
-            default: showDisplay(expression.firstInput);
+        if ((expression.firstInput != "" && expression.secondInput != "")) {
+            switch (expression.operator) {
+                case "+":
+                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) + parseFloat(expression.secondInput));
+                    break;
+                case "-":
+                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) - parseFloat(expression.secondInput));
+                    break;
+                case "*":
+                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) * parseFloat(expression.secondInput));
+                    break;
+                case "/":
+                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) / parseFloat(expression.secondInput));
+                    break;
+                case "%":
+                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) % parseFloat(expression.secondInput));
+                    break; 
+                default: showDisplay(expression.firstInput);
+            }
         }
     }
 
