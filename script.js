@@ -6,7 +6,8 @@ const calculate = function() {
         secondInput: "",
         operator: null,
         clearOldSum: false,
-        hasDecimal: false,
+        firstHasDecimal: false,
+        secondHasDecimal: false,
     };
 
     function initializeEventListeners() {
@@ -19,7 +20,7 @@ const calculate = function() {
                 if (expression.operator) {
                     showDisplay(expression.secondInput += event.target.textContent);    
                 } else if (expression.clearOldSum) {
-                    expression.hasDecimal = false; //confirm this line should stay here.
+                    // expression.hasDecimal = false; //confirm this line should stay here.
                     expression.firstInput = "";
                     expression.clearOldSum = false;
                     showDisplay(expression.firstInput += event.target.textContent);
@@ -31,7 +32,7 @@ const calculate = function() {
             if (event.target.classList.contains("operator")) {
                 if (!expression.operator) {
                     expression.operator = event.target.textContent;
-                } else {
+                } else if (expression.operator) {
                     operate();
                     expression.secondInput = "";
                     expression.firstInput = `${expression.firstInput}`;
@@ -49,6 +50,7 @@ const calculate = function() {
                 expression.operator = null;
                 expression.firstInput = `${expression.firstInput}`;
                 expression.clearOldSum = true;
+                expression.hasDecimal = false;
             }
 
             if (event.target.classList.contains("MC")) {
@@ -59,15 +61,12 @@ const calculate = function() {
             }
 
             if (event.target.classList.contains("decimal")) {
-                if (expression.operator && !expression.hasDecimal) {
-                    if (expression.secondInput == "") {
-                        showDisplay(expression.secondInput += "0");
-                        showDisplay(expression.secondInput += ".")
-                    } else showDisplay(expression.secondInput += ".");
+                if (expression.operator && !expression.secondHasDecimal) {
+                    expression.secondInput == "" ? showDisplay(expression.secondInput = "0.") : showDisplay(expression.secondInput += ".");
                     // expression.hasDecimal = true;
-                } else if (!expression.hasDecimal) {
+                } else if (!expression.firstHasDecimal) {
                     // expression.hasDecimal = true;
-                    expression.firstInput == "" ? showDisplay(expression.firstInput += "0.") : showDisplay(expression.firstInput += ".");
+                    expression.firstInput == "" ? showDisplay(expression.firstInput = "0.") : showDisplay(expression.firstInput += ".");
                 }
             }
             console.log(expression);
@@ -85,18 +84,21 @@ const calculate = function() {
         display.style.visibility = "visible";
         }, 45);
         display.textContent = response;
-        if (display.textContent.slice(0, 100).includes(".")) {
-            expression.hasDecimal = true;
-        } else {
-            expression.hasDecimal = false;
-        }
+        if (expression.firstInput && `${expression.firstInput}`.slice(0, 100).includes(".")) {
+            expression.firstHasDecimal = true;
+        } else expression.firstHasDecimal = false;
+        if (expression.secondInput && `${expression.secondInput}`.slice(0, 100).includes(".")) {
+            expression.secondHasDecimal = true;
+        } else expression.secondHasDecimal = false;
     }
 
     const clear = function() {
         expression.firstInput = "";
         expression.secondInput = "";
         expression.operator = null;
-        expression.hasDecimal = false;
+        expression.firstHasDecimal = false;
+        expression.secondHasDecimal = false;
+        expression.clearOldSum = false;
         showDisplay("0");
     }
 
@@ -127,6 +129,7 @@ const calculate = function() {
             case "%":
                 showDisplay(expression.firstInput = parseFloat(expression.firstInput) % parseFloat(expression.secondInput));
                 break; 
+            default: showDisplay(expression.firstInput);
         }
     }
 
