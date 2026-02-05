@@ -16,25 +16,40 @@ const calculate = function() {
         buttonContainer.addEventListener("mousedown", handleButtons);
         function handleButtons (event) {
 
-            if (event.target.classList.contains("number")) {
-                if (expression.operator) {
-                    showDisplay(expression.secondInput += event.target.textContent);    
-                } else if (expression.clearOldSum) {
-                    // expression.hasDecimal = false; //confirm this line should stay here.
+            if (event.target.classList.contains("0")) {
+                if (expression.operator && expression.firstInput != "" && (!expression.secondInput.substring(0, 1).includes("0") || expression.secondHasDecimal)) {
+                    updateDisplay(expression.secondInput += event.target.textContent);
+                }
+                else if (expression.clearOldSum && (!expression.firstInput.substring(0, 1).includes("0") || expression.firstHasDecimal)) {
                     expression.firstInput = "";
                     expression.clearOldSum = false;
-                    showDisplay(expression.firstInput += event.target.textContent);
+                    updateDisplay(expression.firstInput += event.target.textContent);
+                }
+                else if (!expression.firstInput.substring(0, 1).includes("0") || expression.firstHasDecimal) {
+                    updateDisplay(expression.firstInput += event.target.textContent);
+                }
+            }
+
+            if (event.target.classList.contains("number")) {
+                if (expression.operator && expression.firstInput != "") {
+                    updateDisplay(expression.secondInput += event.target.textContent);
+                } else if (expression.clearOldSum) {
+                    expression.firstInput = "";
+                    expression.clearOldSum = false;
+                    updateDisplay(expression.firstInput += event.target.textContent);
                 } else {
-                    showDisplay(expression.firstInput += event.target.textContent);
+                    updateDisplay(expression.firstInput += event.target.textContent);
                 }
             }
 
             if (event.target.classList.contains("operator")) {
+                expression.clearOldSum = false;
                 if (!expression.operator) {
                     expression.operator = event.target.textContent;
                 } else if (expression.operator) {
                     operate();
                     expression.secondInput = "";
+                    expression.secondHasDecimal = false;
                     expression.firstInput = `${expression.firstInput}`;
                     expression.operator = event.target.textContent;
                 }
@@ -44,13 +59,13 @@ const calculate = function() {
                 clear();
             }
             
-            if (expression.operator && event.target.classList.contains("equals")) {
+            if (event.target.classList.contains("equals")) {
                 operate();
                 expression.secondInput = "";
+                expression.secondHasDecimal = false;
                 expression.operator = null;
                 expression.firstInput = `${expression.firstInput}`;
                 expression.clearOldSum = true;
-                expression.hasDecimal = false;
             }
 
             if (event.target.classList.contains("MC")) {
@@ -64,14 +79,12 @@ const calculate = function() {
                 if (expression.clearOldSum) {
                     expression.firstInput = "";
                     expression.clearOldSum = false;
-                    showDisplay(expression.firstInput = "0.");
+                    updateDisplay(expression.firstInput = "0.");
                 }
                 if (expression.operator && !expression.secondHasDecimal) {
-                    expression.secondInput == "" ? showDisplay(expression.secondInput = "0.") : showDisplay(expression.secondInput += ".");
-                    // expression.hasDecimal = true;
+                    expression.secondInput == "" ? updateDisplay(expression.secondInput = "0.") : updateDisplay(expression.secondInput += ".");
                 } else if (!expression.firstHasDecimal) {
-                    // expression.hasDecimal = true;
-                    expression.firstInput == "" ? showDisplay(expression.firstInput = "0.") : showDisplay(expression.firstInput += ".");
+                    expression.firstInput == "" ? updateDisplay(expression.firstInput = "0.") : updateDisplay(expression.firstInput += ".");
                 }
             }
             console.log(expression);
@@ -82,8 +95,7 @@ const calculate = function() {
     }
 
     const display = document.querySelector("#display");
-    const showDisplay = function(response) {
-        
+    const updateDisplay = function(response) {
         display.style.visibility = "hidden";
         setTimeout(() => {
         display.style.visibility = "visible";
@@ -104,7 +116,7 @@ const calculate = function() {
         expression.firstHasDecimal = false;
         expression.secondHasDecimal = false;
         expression.clearOldSum = false;
-        showDisplay("0");
+        updateDisplay("0");
     }
 
     const character = document.querySelector("#lady");
@@ -121,21 +133,21 @@ const calculate = function() {
         if ((expression.firstInput != "" && expression.secondInput != "")) {
             switch (expression.operator) {
                 case "+":
-                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) + parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) + parseFloat(expression.secondInput));
                     break;
                 case "-":
-                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) - parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) - parseFloat(expression.secondInput));
                     break;
                 case "*":
-                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) * parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) * parseFloat(expression.secondInput));
                     break;
                 case "/":
-                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) / parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) / parseFloat(expression.secondInput));
                     break;
                 case "%":
-                    showDisplay(expression.firstInput = parseFloat(expression.firstInput) % parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) % parseFloat(expression.secondInput));
                     break; 
-                default: showDisplay(expression.firstInput);
+                default: updateDisplay(expression.firstInput);
             }
         }
     }
