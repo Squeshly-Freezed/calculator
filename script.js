@@ -3,8 +3,10 @@ const calculate = function() {
     
     let expression = {
         firstInput: "",
-        operator: null,
         secondInput: "",
+        operator: null,
+        clearOldSum: false,
+        hasDecimal: false,
     };
 
     function initializeEventListeners() {
@@ -15,11 +17,14 @@ const calculate = function() {
 
             if (event.target.classList.contains("number")) {
                 if (expression.operator) {
-                    expression.secondInput += event.target.textContent;
-                    showDisplay(expression.secondInput);    
+                    showDisplay(expression.secondInput += event.target.textContent);    
+                } else if (expression.clearOldSum) {
+                    expression.hasDecimal = false; //confirm this line should stay here.
+                    expression.firstInput = "";
+                    expression.clearOldSum = false;
+                    showDisplay(expression.firstInput += event.target.textContent);
                 } else {
-                    expression.firstInput += event.target.textContent;
-                    showDisplay(expression.firstInput);
+                    showDisplay(expression.firstInput += event.target.textContent);
                 }
             }
 
@@ -32,7 +37,6 @@ const calculate = function() {
                     expression.firstInput = `${expression.firstInput}`;
                     expression.operator = event.target.textContent;
                 }
-
             }
 
             if (event.target.classList.contains("clear")) {
@@ -44,6 +48,7 @@ const calculate = function() {
                 expression.secondInput = "";
                 expression.operator = null;
                 expression.firstInput = `${expression.firstInput}`;
+                expression.clearOldSum = true;
             }
 
             if (event.target.classList.contains("MC")) {
@@ -53,13 +58,18 @@ const calculate = function() {
                 }
             }
 
-            // if (event.target.classList.contains("decimal")) {
-            //     if (expression.operator) {
-            //         expression.secondInput = parseInt(.)
-            //     } else {
-            //         expression.firstInput = 
-            //     }
-            // }
+            if (event.target.classList.contains("decimal")) {
+                if (expression.operator && !expression.hasDecimal) {
+                    if (expression.secondInput == "") {
+                        showDisplay(expression.secondInput += "0");
+                        showDisplay(expression.secondInput += ".")
+                    } else showDisplay(expression.secondInput += ".");
+                    // expression.hasDecimal = true;
+                } else if (!expression.hasDecimal) {
+                    // expression.hasDecimal = true;
+                    expression.firstInput == "" ? showDisplay(expression.firstInput += "0.") : showDisplay(expression.firstInput += ".");
+                }
+            }
             console.log(expression);
         }
          
@@ -69,17 +79,24 @@ const calculate = function() {
 
     const display = document.querySelector("#display");
     const showDisplay = function(response) {
+        
         display.style.visibility = "hidden";
         setTimeout(() => {
         display.style.visibility = "visible";
         }, 45);
         display.textContent = response;
+        if (display.textContent.slice(0, 100).includes(".")) {
+            expression.hasDecimal = true;
+        } else {
+            expression.hasDecimal = false;
+        }
     }
 
     const clear = function() {
         expression.firstInput = "";
-        expression.operator = null;
         expression.secondInput = "";
+        expression.operator = null;
+        expression.hasDecimal = false;
         showDisplay("0");
     }
 
