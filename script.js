@@ -17,7 +17,7 @@ const calculate = function() {
         function handleButtons (event) {
 
             if (event.target.classList.contains("0")) {
-                if (expression.operator && expression.firstInput != "" && (!expression.secondInput.substring(0, 1).includes("0") || expression.secondHasDecimal)) {
+                if (expression.operator && expression.firstInput && (!expression.secondInput.substring(0, 1).includes("0") || expression.secondHasDecimal)) {
                     updateDisplay(expression.secondInput += event.target.textContent);
                 }
                 else if (expression.clearOldSum && (!expression.firstInput.substring(0, 1).includes("0") || expression.firstHasDecimal)) {
@@ -25,26 +25,28 @@ const calculate = function() {
                     expression.clearOldSum = false;
                     updateDisplay(expression.firstInput += event.target.textContent);
                 }
-                else if (!expression.firstInput.substring(0, 1).includes("0") || expression.firstHasDecimal) {
+                else if ((!expression.firstInput.substring(0, 1).includes("0") || expression.firstHasDecimal) && !expression.operator) {
                     updateDisplay(expression.firstInput += event.target.textContent);
                 }
             }
 
             if (event.target.classList.contains("number")) {
-                if (expression.operator && expression.firstInput != "") {
+                if (expression.firstInput.substring(0, 1).includes("0") && !expression.firstHasDecimal) expression.firstInput = "";
+                if (expression.secondInput.substring(0, 1).includes("0") && !expression.secondHasDecimal) expression.secondInput = "";
+                if (expression.operator && expression.firstInput) {
                     updateDisplay(expression.secondInput += event.target.textContent);
                 } else if (expression.clearOldSum) {
                     expression.firstInput = "";
                     expression.clearOldSum = false;
                     updateDisplay(expression.firstInput += event.target.textContent);
-                } else {
+                } else if (!expression.operator) {
                     updateDisplay(expression.firstInput += event.target.textContent);
                 }
             }
 
             if (event.target.classList.contains("operator")) {
                 expression.clearOldSum = false;
-                if (!expression.operator) {
+                if (!expression.operator && expression.firstInput) {
                     expression.operator = event.target.textContent;
                 } else if (expression.operator) {
                     operate();
@@ -101,6 +103,7 @@ const calculate = function() {
         display.style.visibility = "visible";
         }, 45);
         display.textContent = response;
+        display.textContent = display.textContent.substring(0,14);
         if (expression.firstInput && `${expression.firstInput}`.slice(0, 100).includes(".")) {
             expression.firstHasDecimal = true;
         } else expression.firstHasDecimal = false;
@@ -130,7 +133,7 @@ const calculate = function() {
     }
 
     const operate = function() {
-        if ((expression.firstInput != "" && expression.secondInput != "")) {
+        if ((expression.firstInput && expression.secondInput)) {
             switch (expression.operator) {
                 case "+":
                     updateDisplay(expression.firstInput = parseFloat(expression.firstInput) + parseFloat(expression.secondInput));
