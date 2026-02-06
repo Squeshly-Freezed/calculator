@@ -1,7 +1,7 @@
 # calculator
 Learning project: Calculator
 
-Classic Realistic Calculator
+*!*Classic Ultra Realistic Calculator*!*
 
 
 
@@ -27,4 +27,12 @@ What I've learned:
 - more JavaScript practice - including: event delegation, using literal object to hold main variables, logic/conditional practice.
 - creating a realistic aesthetic with CSS.
 - testing for and handling unexpected user input.
-- writing succinct, organised code.
+- writing succinct, organised code?
+
+My thoughts on the project:
+
+- Not using eval() due to security risk adds some complexity.
+- The buttonHandler function turned into a conditional nightmare, need to work on writing conditionals more logically and succinctly.
+- I'm very happy with the aesthetic.
+- Using a literal object to store the main variables is probably not the best way to go.
+- Still has a copuple of minor bugs...
