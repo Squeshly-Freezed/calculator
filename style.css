@@ -110,13 +110,7 @@ body {
     color: rgb(89, 79, 79);;
 }
 
-@media (max-height: 640px) {
-    #display {
-        display: none;
-    }
-}
-
-@media (max-width: 320px) {
+@media (max-height: 530px) {
     #display {
         display: none;
     }
