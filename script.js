@@ -1,9 +1,8 @@
-
 const calculate = function() {
     
     let expression = {
-        firstInput: "",
-        secondInput: "",
+        firstOperand: "",
+        secondOperand: "",
         operator: null,
         clearOldSum: false,
         firstHasDecimal: false,
@@ -17,42 +16,42 @@ const calculate = function() {
         function handleButtons (event) {
 
             if (event.target.classList.contains("0")) {
-                if (expression.operator && expression.firstInput && (!expression.secondInput.substring(0, 1).includes("0") || expression.secondHasDecimal)) {
-                    updateDisplay(expression.secondInput += event.target.textContent);
+                if (expression.operator && expression.firstOperand && (!expression.secondOperand.substring(0, 1).includes("0") || expression.secondHasDecimal)) {
+                    updateDisplay(expression.secondOperand += event.target.textContent);
                 }
-                else if (expression.clearOldSum && (!expression.firstInput.substring(0, 1).includes("0") || expression.firstHasDecimal)) {
-                    expression.firstInput = "";
+                else if (expression.clearOldSum && (!expression.firstOperand.substring(0, 1).includes("0") || expression.firstHasDecimal)) {
+                    expression.firstOperand = "";
                     expression.clearOldSum = false;
-                    updateDisplay(expression.firstInput += event.target.textContent);
+                    updateDisplay(expression.firstOperand += event.target.textContent);
                 }
-                else if ((!expression.firstInput.substring(0, 1).includes("0") || expression.firstHasDecimal) && !expression.operator) {
-                    updateDisplay(expression.firstInput += event.target.textContent);
+                else if ((!expression.firstOperand.substring(0, 1).includes("0") || expression.firstHasDecimal) && !expression.operator) {
+                    updateDisplay(expression.firstOperand += event.target.textContent);
                 }
             }
 
             if (event.target.classList.contains("number")) {
-                if (expression.firstInput.substring(0, 1).includes("0") && !expression.firstHasDecimal) expression.firstInput = "";
-                if (expression.secondInput.substring(0, 1).includes("0") && !expression.secondHasDecimal) expression.secondInput = "";
-                if (expression.operator && expression.firstInput) {
-                    updateDisplay(expression.secondInput += event.target.textContent);
+                if (expression.firstOperand.substring(0, 1).includes("0") && !expression.firstHasDecimal) expression.firstOperand = "";
+                if (expression.secondOperand.substring(0, 1).includes("0") && !expression.secondHasDecimal) expression.secondOperand = "";
+                if (expression.operator && expression.firstOperand) {
+                    updateDisplay(expression.secondOperand += event.target.textContent);
                 } else if (expression.clearOldSum) {
-                    expression.firstInput = "";
+                    expression.firstOperand = "";
                     expression.clearOldSum = false;
-                    updateDisplay(expression.firstInput += event.target.textContent);
+                    updateDisplay(expression.firstOperand += event.target.textContent);
                 } else if (!expression.operator) {
-                    updateDisplay(expression.firstInput += event.target.textContent);
+                    updateDisplay(expression.firstOperand += event.target.textContent);
                 }
             }
 
             if (event.target.classList.contains("operator")) {
                 expression.clearOldSum = false;
-                if (!expression.operator && expression.firstInput) {
+                if (!expression.operator && expression.firstOperand) {
                     expression.operator = event.target.textContent;
                 } else if (expression.operator) {
                     operate();
-                    expression.secondInput = "";
+                    expression.secondOperand = "";
                     expression.secondHasDecimal = false;
-                    expression.firstInput = `${expression.firstInput}`;
+                    expression.firstOperand = `${expression.firstOperand}`;
                     expression.operator = event.target.textContent;
                 }
             }
@@ -63,15 +62,15 @@ const calculate = function() {
             
             if (event.target.classList.contains("equals")) {
                 operate();
-                expression.secondInput = "";
+                expression.secondOperand = "";
                 expression.secondHasDecimal = false;
                 expression.operator = null;
-                expression.firstInput = `${expression.firstInput}`;
+                expression.firstOperand = `${expression.firstOperand}`;
                 expression.clearOldSum = true;
             }
 
             if (event.target.classList.contains("MC")) {
-                if (expression.firstInput == 1337) {
+                if (expression.firstOperand == 1337) {
                 clear();
                 showEasterEgg();
                 }
@@ -79,14 +78,14 @@ const calculate = function() {
 
             if (event.target.classList.contains("decimal")) {
                 if (expression.clearOldSum) {
-                    expression.firstInput = "";
+                    expression.firstOperand = "";
                     expression.clearOldSum = false;
-                    updateDisplay(expression.firstInput = "0.");
+                    updateDisplay(expression.firstOperand = "0.");
                 }
                 if (expression.operator && !expression.secondHasDecimal) {
-                    expression.secondInput == "" ? updateDisplay(expression.secondInput = "0.") : updateDisplay(expression.secondInput += ".");
+                    expression.secondOperand == "" ? updateDisplay(expression.secondOperand = "0.") : updateDisplay(expression.secondOperand += ".");
                 } else if (!expression.firstHasDecimal) {
-                    expression.firstInput == "" ? updateDisplay(expression.firstInput = "0.") : updateDisplay(expression.firstInput += ".");
+                    expression.firstOperand == "" ? updateDisplay(expression.firstOperand = "0.") : updateDisplay(expression.firstOperand += ".");
                 }
             }
             console.log(expression);
@@ -104,17 +103,17 @@ const calculate = function() {
         }, 45);
         display.textContent = response;
         display.textContent = display.textContent.substring(0,14);
-        if (expression.firstInput && `${expression.firstInput}`.slice(0, 100).includes(".")) {
+        if (expression.firstOperand && `${expression.firstOperand}`.slice(0, 100).includes(".")) {
             expression.firstHasDecimal = true;
         } else expression.firstHasDecimal = false;
-        if (expression.secondInput && `${expression.secondInput}`.slice(0, 100).includes(".")) {
+        if (expression.secondOperand && `${expression.secondOperand}`.slice(0, 100).includes(".")) {
             expression.secondHasDecimal = true;
         } else expression.secondHasDecimal = false;
     }
 
     const clear = function() {
-        expression.firstInput = "";
-        expression.secondInput = "";
+        expression.firstOperand = "";
+        expression.secondOperand = "";
         expression.operator = null;
         expression.firstHasDecimal = false;
         expression.secondHasDecimal = false;
@@ -133,24 +132,24 @@ const calculate = function() {
     }
 
     const operate = function() {
-        if ((expression.firstInput && expression.secondInput)) {
+        if ((expression.firstOperand && expression.secondOperand)) {
             switch (expression.operator) {
                 case "+":
-                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) + parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstOperand = parseFloat(expression.firstOperand) + parseFloat(expression.secondOperand));
                     break;
                 case "-":
-                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) - parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstOperand = parseFloat(expression.firstOperand) - parseFloat(expression.secondOperand));
                     break;
                 case "*":
-                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) * parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstOperand = parseFloat(expression.firstOperand) * parseFloat(expression.secondOperand));
                     break;
                 case "/":
-                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) / parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstOperand = parseFloat(expression.firstOperand) / parseFloat(expression.secondOperand));
                     break;
                 case "%":
-                    updateDisplay(expression.firstInput = parseFloat(expression.firstInput) % parseFloat(expression.secondInput));
+                    updateDisplay(expression.firstOperand = parseFloat(expression.firstOperand) % parseFloat(expression.secondOperand));
                     break; 
-                default: updateDisplay(expression.firstInput);
+                default: updateDisplay(expression.firstOperand);
             }
         }
     }
